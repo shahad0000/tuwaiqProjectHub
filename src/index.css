@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+.text-tuwaiq-purple {
+    color: #4f29b7;
+}
+
+.bg-tuwaiq-purple {
+    background-color: #623bcc;
+}
+
+.bg-tuwaiq-purple:hover {
+    background-color: #4f29b7;
+}

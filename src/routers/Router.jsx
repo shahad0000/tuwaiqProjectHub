@@ -1,0 +1,28 @@
+import React from "react";
+import { createBrowserRouter, RouterProvider } from "react-router";
+import Layout from "../components/Layout";
+import SignUp from "../pages/SignUp";
+import Login from "../pages/Login";
+import Admin from "../pages/Admin";
+import Students from "../pages/Students";
+import Teachers from "../pages/Teachers";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Layout />,
+    children: [
+      { path: "/signUp", element: <SignUp /> },
+      { path: "/login", element: <Login /> },
+      { path: "/admins", element: <Admin /> },
+      { path: "/students", element: <Students /> },
+      { path: "/teachers", element: <Teachers /> },
+    ],
+  },
+]);
+
+const Router = () => {
+  return <RouterProvider router={router} />;
+};
+
+export default Router;
