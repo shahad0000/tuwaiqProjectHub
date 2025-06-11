@@ -6,12 +6,14 @@ import Admin from "../pages/Admin";
 import Students from "../pages/Students";
 import Teachers from "../pages/Teachers";
 import Layout from "../components/Layout";
+import { Navigate } from "react-router";
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
     children: [
-      { index: true, path: "/", element: <Login /> },
+      { index: true, element: <Navigate to="/login" /> }, 
+      { path: "/login", element: <Login /> },
       { path: "/signUp", element: <SignUp /> },
       { path: "/admins", element: <Admin /> },
       { path: "/students", element: <Students /> },
