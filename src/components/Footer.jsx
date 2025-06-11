@@ -39,7 +39,7 @@ const Footer = () => {
           </a>
         </div>
         <p class="text-center text-gray-700 font-medium">
-          &copy; © 2025 Tuwaiq Project Hub. All rights reserved.
+          &copy; 2025 Tuwaiq Project Hub. All rights reserved.
         </p>
       </footer>
     </div>
