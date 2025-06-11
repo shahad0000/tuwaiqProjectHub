@@ -8,10 +8,12 @@ import { FaLightbulb } from "react-icons/fa";
 import { FaHome } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { FaPenAlt } from "react-icons/fa";
+import { RxHamburgerMenu } from "react-icons/rx";
+import { FaCheckCircle } from "react-icons/fa";
 
 const Students = () => {
   const [openSidebar, setOpenSidebar] = useState(false);
-  const [activeSection, setActiveSection] = useState("dashboard");
+  const [activeSection, setActiveSection] = useState("home");
   const currId = localStorage.getItem("id");
   const currUsername = localStorage.getItem("username");
   const navigate = useNavigate();
@@ -19,6 +21,8 @@ const Students = () => {
   const [team, setTeam] = useState({});
   const [projects, setProject] = useState([]);
   const [currProjs, setCurrProjs] = useState([]);
+  const [approved, setApproved] = useState([]);
+
   const [newProject, setNewProject] = useState({
     owner: currUsername,
     title: "",
@@ -42,6 +46,10 @@ const Students = () => {
         (proj) => proj.owner === currUsername
       );
       setCurrProjs(currentProjects);
+      setApproved([]);
+      projects.forEach((proj) => {
+        if (proj.status === "Approved") setApproved((prev) => [...prev, proj]);
+      });
     } catch (err) {
       console.error(err);
     }
@@ -156,7 +164,7 @@ const Students = () => {
   }, [projects]);
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-gray-50 font-sans">
+    <div className="flex flex-col md:flex-row min-h-screen bg-slate-50 font-sans">
       {addProj && (
         <div className="bg-black/50 overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 h-full items-center justify-center flex">
           <div className="bg-white p-9 rounded-lg">
@@ -220,26 +228,13 @@ const Students = () => {
 
           <button
             onClick={() => setOpenSidebar(!openSidebar)}
-            className="md:hidden p-2 rounded-full hover:bg-gray-200"
+            className="md:hidden p-2 hover:bg-gray-200"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16m-7 6h7"
-              />
-            </svg>
+            <RxHamburgerMenu />
           </button>
         </div>
         <nav className="py-4">
-          <ul className="space-y-2">
+          <ul className="space-y-1">
             {menuItems.map((section) => (
               <li key={section.label}>
                 <button
@@ -247,7 +242,7 @@ const Students = () => {
                     setActiveSection(section.label);
                     setOpenSidebar(false);
                   }}
-                  className={`flex items-center space-x-3 px-4 py-2 w-full text-left hover:bg-indigo-50 rounded-lg transition-colors ${
+                  className={`flex items-center space-x-3 px-4 py-2 w-full text-left hover:bg-indigo-50 transition-colors ${
                     activeSection === section.label ? "bg-indigo-50" : ""
                   }`}
                 >
@@ -264,7 +259,7 @@ const Students = () => {
             ))}
             <button
               onClick={handleLogout}
-              className="flex gap-2 items-center space-x-3 px-4 py-2 w-full text-left hover:bg-red-50 rounded-lg transition-colors text-red-700 cursor-pointer"
+              className="flex gap-2 items-center space-x-3 px-4 py-2 w-full text-left hover:bg-red-50 transition-colors text-red-700 cursor-pointer"
             >
               <div className="text-2xl">
                 <MdLogout />
@@ -274,135 +269,203 @@ const Students = () => {
           </ul>
         </nav>
       </aside>
-
       {/* Main Content */}
-      <main className="flex-1 p-4 md:p-6 overflow-y-auto">
-        <div className="md:hidden flex justify-between items-center mb-4">
+      <main className="flex-1  overflow-y-auto">
+        <div className="md:hidden flex justify-between items-center p-4 ">
           <h1 className="text-xl font-bold text-gray-800">Tuwaiq ProjectHub</h1>
           <button
             onClick={() => setOpenSidebar(!openSidebar)}
-            className="p-2 rounded-full hover:bg-gray-200"
+            className="p-2 text-2xl rounded-full hover:bg-gray-200"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16m-7 6h7"
-              />
-            </svg>
+            <RxHamburgerMenu />
           </button>
         </div>
 
-        {activeSection === "home" && <section className="space-y-6"></section>}
+        {activeSection === "home" && (
+          <div>
+            <section className="relative  py-6 px-4">
+              <div className="absolute inset-0 opacity-30">
+                <div className="absolute top-20 left-20 w-32 h-32 bg-indigo-200 rounded-full blur-xl"></div>
+                <div className="absolute bottom-20 right-20 w-40 h-40 bg-purple-200 rounded-full blur-xl"></div>
+              </div>
+              <header className="relative z-10 px-6 mb-3">
+                <h1 className="text-3xl font-bold  text-neutral-600 mb-3">
+                  Welcome Back, {currUsername}
+                </h1>
+                <div className="w-16 h-1 bg-gradient-to-r from-indigo-500 to-indigo-800 rounded-full"></div>
+              </header>
+
+              <div className="relative z-10 container mx-auto px-5 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div className="w-full flex flex-col md:items-start md:text-left order-2 lg:order-1 items-center text-center">
+                  <h1 className="title-font text-4xl sm:text-5xl  font-bold text-gray-900 leading-tight">
+                    Share Your Next
+                    <span className=" mx-2 text-indigo-900">Big Idea</span>
+                  </h1>
+
+                  <p className="mb-8 leading-relaxed text-lg text-gray-600 max-w-lg">
+                    Have a creative project in mind? Submit your idea and start
+                    bringing it to life with our innovative platform!
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                    <button
+                      onClick={() => setAddProj(true)}
+                      className=" text-white bg-gradient-to-br from-indigo-800 to-indigo-900 cursor-pointer border-0 py-2 px-8 focus:outline-none hover:from-indigo-900 rounded-md text-lg font-semibold "
+                    >
+                      New Project Idea +
+                    </button>
+                  </div>
+                </div>
+
+                <div className="w-full order-1 lg:order-2">
+                  <div>
+                    <img
+                      className="object-cover object-center rounded-2xl w-full "
+                      alt="hero"
+                      src="/imgs/heroImg.png"
+                    />
+                  </div>
+                </div>
+              </div>
+            </section>
+            <div className="m-4">
+              <h1 className="text-2xl font-bold text-gray-800 flex gap-3 items-center m-4">
+                Approved Project Ideas
+                <div className="text-green-700">
+                  <FaCheckCircle />
+                </div>
+              </h1>
+              <div className="bg-white p-3 rounded-lg shadow-md overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-indigo-50">
+                    <tr className="text-indigo-900 uppercase text-left">
+                      <th className="px-4 py-3">Owner</th>
+                      <th className="px-4 py-3">Title</th>
+                      <th className="px-4 py-3">Description</th>
+
+                      <th className="px-4 py-3">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200">
+                    {approved.map((proj) => (
+                      <tr key={proj.id}>
+                        <td className="px-4 py-3 whitespace-wrap text-gray-900">
+                          {proj.owner}
+                        </td>
+                        <td className="px-4 py-3 whitespace-wrap text-gray-900">
+                          {proj.title}
+                        </td>
+                        <td className="px-4 py-3 whitespace-wrap text-gray-900">
+                          {proj.desc}
+                        </td>
+                        <td>
+                          <div className="text-green-700 bg-green-100 w-fit p-0.5 px-2 rounded-sm whitespace-wrap text-sm">
+                            {proj.status}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
 
         {activeSection === "project proposals" && (
-          <section className="space-y-6">
+          <section className="space-y-6 p-5 min-h-screen">
             <header className="flex justify-between p-3">
               <h1 className="text-2xl font-bold text-gray-800">
                 Your Projects
               </h1>
               <button
                 onClick={() => setAddProj(true)}
-                className="cursor-pointer text-white bg-[#0b9883] px-2 p-1 rounded-sm font-semibold"
+                className="cursor-pointer text-white bg-indigo-800 px-2 p-1 rounded-sm font-semibold"
               >
                 Add new project +
               </button>
             </header>
             <div className="bg-white p-4 rounded-lg shadow-md overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Title
-                    </th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Description
-                    </th>
+                <thead className="bg-indigo-50">
+                  <tr className="text-indigo-900 uppercase text-left">
+                    <th className="px-4 py-3">Title</th>
+                    <th className="px-4 py-3">Description</th>
 
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Status
-                    </th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Comment
-                    </th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Actions
-                    </th>
+                    <th className="px-4 py-3">Status</th>
+                    <th className="px-4 py-3">Comment</th>
+                    <th className="px-4 py-3">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {currProjs.map((proj) => (
-                    <tr key={proj.id}>
-                      <td className="px-4 py-3 whitespace-wrap text-sm text-gray-900">
-                        {proj.title}
-                      </td>
-                      <td className="px-4 py-3 whitespace-wrap text-sm text-gray-900">
-                        {proj.desc}
-                      </td>
-                      <td>
-                        <div
-                          className={` w-fit p-0.5 px-2 rounded-sm whitespace-wrap text-sm ${
-                            proj.status === "Pending"
-                              ? "text-yellow-600 bg-yellow-50"
-                              : proj.status === "Approved"
-                              ? "text-green-600 bg-green-50"
-                              : "text-red-700 bg-red-50"
-                          }`}
-                        >
-                          {proj.status}
+                {currProjs.length > 0 ? (
+                  <tbody className="divide-y divide-gray-200">
+                    {currProjs.map((proj) => (
+                      <tr key={proj.id}>
+                        <td className="px-4 py-3 whitespace-wrap  text-gray-900">
+                          {proj.title}
+                        </td>
+                        <td className="px-4 py-3 whitespace-wrap text-gray-900">
+                          {proj.desc}
+                        </td>
+                        <td>
+                          <div
+                            className={` w-fit p-0.5 px-2 rounded-sm whitespace-wrap  ${
+                              proj.status === "Pending"
+                                ? "text-yellow-700 bg-yellow-50"
+                                : proj.status === "Approved"
+                                ? "text-green-700 bg-green-100"
+                                : "text-red-800 bg-red-100"
+                            }`}
+                          >
+                            {proj.status}
+                          </div>
+                        </td>
+                        <td className="px-4 py-3 whitespace-wrap  text-gray-900">
+                          {proj.comment !== "" ? (
+                            proj.comment
+                          ) : (
+                            <div className="text-gray-500">No comments yet</div>
+                          )}
+                        </td>
+                        {proj.status === "Pending" && (
+                          <td className="px-4  whitespace-wrap text-xl text-gray-900">
+                            <button
+                              onClick={() => editProjects(proj.id)}
+                              className=" w-full flex justify-center cursor-pointer text-tuwaiq-purple"
+                            >
+                              <FaPenAlt />
+                            </button>
+                          </td>
+                        )}
+                      </tr>
+                    ))}
+                  </tbody>
+                ) : (
+                  <tbody>
+                    <tr>
+                      <td colSpan="5">
+                        <div className="text-center py-6 text-gray-500 text-lg">
+                          You don't have any projects yet.
                         </div>
                       </td>
-                      <td className="px-4 py-3 whitespace-wrap text-sm text-gray-900">
-                        {proj.comment !== "" ? (
-                          proj.comment
-                        ) : (
-                          <div className="text-gray-500">No comments yet</div>
-                        )}
-                      </td>
-                      {proj.status === "Pending" && (
-                        <td className="px-4  whitespace-wrap text-xl text-gray-900">
-                          <button
-                            onClick={() => editProjects(proj.id)}
-                            className=" w-full flex justify-center cursor-pointer text-tuwaiq-purple"
-                          >
-                            <FaPenAlt />
-                          </button>
-                        </td>
-                      )}
                     </tr>
-                  ))}
-                </tbody>
+                  </tbody>
+                )}
               </table>
             </div>
           </section>
         )}
 
         {activeSection === "my team" && (
-          <div>
-            <h1 className="text-2xl font-bold text-gray-800">My Team</h1>
+          <div className="p-6 min-h-screen">
+            <h1 className="text-2xl font-bold m-4 text-gray-800">My Team</h1>
             <div className="bg-white p-4 rounded-lg shadow-md overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-4 py-3 text-center font-medium text-gray-500 uppercase tracking-wider">
-                      Name
-                    </th>
-                    <th className="px-4 py-3 text-center font-medium text-gray-500 uppercase tracking-wider">
-                      Role
-                    </th>
-                    <th className="px-4 py-3 text-center font-medium text-gray-500 uppercase tracking-wider">
-                      Email
-                    </th>
-                    <th className="px-4 py-3 text-center font-medium text-gray-500 uppercase tracking-wider">
-                      Contact
-                    </th>
+                <thead className="bg-indigo-50">
+                  <tr className="text-indigo-900 uppercase text-center">
+                    <th className="px-4 py-3 ">Name</th>
+                    <th className="px-4 py-3 ">Role</th>
+                    <th className="px-4 py-3 ">Email</th>
+                    <th className="px-4 py-3 ">Contact</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">

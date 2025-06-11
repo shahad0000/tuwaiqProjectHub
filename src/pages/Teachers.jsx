@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import { MdLogout } from "react-icons/md";
@@ -8,15 +8,16 @@ import { FaLightbulb } from "react-icons/fa";
 import { FaHome } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { MdOutlineAddComment } from "react-icons/md";
+import { RxHamburgerMenu } from "react-icons/rx";
+import { FaCheckCircle } from "react-icons/fa";
 
 const Teachers = () => {
   const [openSidebar, setOpenSidebar] = useState(false);
-  const [activeSection, setActiveSection] = useState("dashboard");
+  const [activeSection, setActiveSection] = useState("home");
   const currId = localStorage.getItem("id");
   const currUsername = localStorage.getItem("username");
   const currEmail = localStorage.getItem("email");
   const navigate = useNavigate();
-  const [addProj, setAddProj] = useState(false);
   const [team, setTeam] = useState({});
   const [projects, setProject] = useState([]);
   const [pending, setPending] = useState([]);
@@ -43,9 +44,11 @@ const Teachers = () => {
       setPending([]);
       setApproved([]);
       setDetermined([]);
+      res.data.forEach((proj) => {
+        if (proj.status === "Approved") setApproved((prev) => [...prev, proj]);
+      });
       teamProjs.forEach((proj) => {
         if (proj.status === "Pending") setPending((prev) => [...prev, proj]);
-        if (proj.status === "Approved") setApproved((prev) => [...prev, proj]);
         if (proj.status === "Approved" || proj.status === "Rejected")
           setDetermined((prev) => [...prev, proj]);
       });
@@ -94,7 +97,7 @@ const Teachers = () => {
     }
   };
 
-  const getTeam = async (id) => {
+  const getTeam = async () => {
     try {
       const res = await axios.get(
         "https://6844185771eb5d1be03260ba.mockapi.io/teams"
@@ -138,50 +141,7 @@ const Teachers = () => {
   }, [team]);
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-gray-50 font-sans">
-      {addProj && (
-        <div className="bg-black/50 overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 h-full items-center justify-center flex">
-          <div className="bg-white p-9 rounded-lg">
-            <h1 className="text-2xl xl:text-3xl font-extrabold text-center mb-3">
-              Add new project idea
-            </h1>
-            <form onSubmit={postProjects} className="max-w-sm ">
-              <label htmlFor="title">Title</label>
-              <input
-                className="mb-3 w-full px-8 py-3 rounded-sm font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-                type="text"
-                name="title"
-                required
-                value={newProject.title}
-                onChange={handleChange}
-                placeholder="Enter the title of your project"
-              />
-              <label htmlFor="desc">Description</label>
-              <textarea
-                className="w-full px-8 py-3 rounded-sm font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mb-3"
-                type="text"
-                name="desc"
-                value={newProject.desc}
-                onChange={handleChange}
-                placeholder="Type the details of your project"
-                required
-              ></textarea>
-              <div className="flex gap-4 px-11">
-                <button
-                  onClick={() => setAddProj(false)}
-                  className="mt-8 tracking-wide font-semibold bg-gray-500 text-white w-full py-3 rounded-sm cursor-pointer transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
-                >
-                  Cancel
-                </button>
-                <button className="mt-8 tracking-wide font-semibold bg-tuwaiq-purple text-gray-100 w-full py-3 rounded-sm cursor-pointer transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
-                  Submit
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
+    <div className="flex flex-col md:flex-row min-h-screen bg-slate-50 font-sans">
       {/* Sidebar */}
       <aside
         className={`bg-white shadow-lg fixed md:static inset-y-0 left-0 z-40 transition-all duration-300 ease-in-out ${
@@ -204,24 +164,11 @@ const Teachers = () => {
             onClick={() => setOpenSidebar(!openSidebar)}
             className="md:hidden p-2 rounded-full hover:bg-gray-200"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16m-7 6h7"
-              />
-            </svg>
+            <RxHamburgerMenu />
           </button>
         </div>
         <nav className="py-4">
-          <ul className="space-y-2">
+          <ul className="space-y-1">
             {menuItems.map((section) => (
               <li key={section.label}>
                 <button
@@ -229,7 +176,7 @@ const Teachers = () => {
                     setActiveSection(section.label);
                     setOpenSidebar(false);
                   }}
-                  className={`flex items-center space-x-3 px-4 py-2 w-full text-left hover:bg-indigo-50 rounded-lg transition-colors ${
+                  className={`flex items-center space-x-3 px-4 py-2 w-full text-left hover:bg-indigo-50 transition-colors ${
                     activeSection === section.label ? "bg-indigo-50" : ""
                   }`}
                 >
@@ -246,7 +193,7 @@ const Teachers = () => {
             ))}
             <button
               onClick={handleLogout}
-              className="flex gap-2 items-center space-x-3 px-4 py-2 w-full text-left hover:bg-red-50 rounded-lg transition-colors text-red-700 cursor-pointer"
+              className="flex gap-2 items-center space-x-3 px-4 py-2 w-full text-left hover:bg-red-50 transition-colors text-red-700 cursor-pointer"
             >
               <div className="text-2xl">
                 <MdLogout />
@@ -259,185 +206,273 @@ const Teachers = () => {
 
       {/* Main Content */}
       <main className="flex-1 p-4 md:p-6 overflow-y-auto">
-        <div className="md:hidden flex justify-between items-center mb-4">
+        <div className="md:hidden flex justify-between items-center p-4 ">
           <h1 className="text-xl font-bold text-gray-800">Tuwaiq ProjectHub</h1>
           <button
             onClick={() => setOpenSidebar(!openSidebar)}
-            className="p-2 rounded-full hover:bg-gray-200"
+            className="p-2 text-2xl rounded-full hover:bg-gray-200"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16m-7 6h7"
-              />
-            </svg>
+            <RxHamburgerMenu />
           </button>
         </div>
 
-        {activeSection === "home" && <section className="space-y-6"></section>}
+        {activeSection === "home" && (
+          <div>
+            <section className="relative py-6 px-4">
+              <div className="absolute inset-0 opacity-30">
+                <div className="absolute top-20 left-20 w-32 h-32 bg-indigo-200 rounded-full blur-xl"></div>
+                <div className="absolute bottom-20 right-20 w-40 h-40 bg-purple-200 rounded-full blur-xl"></div>
+              </div>
+              <header className="relative z-10 px-6 mb-3">
+                <h1 className="text-3xl font-bold text-neutral-600 mb-3">
+                  Welcome Back, {currUsername}
+                </h1>
+                <div className="w-16 h-1 bg-gradient-to-r from-indigo-500 to-indigo-800 rounded-full"></div>
+              </header>
+
+              <div className="relative z-10 container mx-auto px-5 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div className="w-full flex flex-col md:items-start md:text-left order-2 lg:order-1 items-center text-center">
+                  <h1 className="title-font text-4xl sm:text-3xl font-bold text-gray-900 leading-tight">
+                    Guide, Review & Approve
+                    <span className="mx-2 text-indigo-900">
+                      Student Projects
+                    </span>
+                  </h1>
+
+                  <p className="mb-8 leading-relaxed text-lg text-gray-600 max-w-lg">
+                    Here you can manage submitted ideas, provide feedback, and
+                    approve or reject projects to help students grow.
+                  </p>
+
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                    <button
+                      onClick={() => setActiveSection("project proposals")}
+                      className="text-white bg-gradient-to-br from-indigo-800 to-indigo-900 cursor-pointer border-0 py-2 px-8 focus:outline-none hover:from-indigo-900 rounded-md text-lg font-semibold"
+                    >
+                      Review Pending Ideas
+                    </button>
+                  </div>
+                </div>
+
+                <div className="w-full order-1 lg:order-2">
+                  <img
+                    className="object-cover object-center rounded-2xl w-full"
+                    alt="hero"
+                    src="/imgs/heroImg.png"
+                  />
+                </div>
+              </div>
+            </section>
+            <div className="m-4">
+              <h1 className="text-2xl font-bold text-gray-800 flex gap-3 items-center m-4">
+                Approved Project Ideas
+                <div className="text-green-700">
+                  <FaCheckCircle />
+                </div>
+              </h1>
+              <div className="bg-white p-3 rounded-lg shadow-md overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-indigo-50">
+                    <tr className="text-indigo-900 uppercase text-left">
+                      <th className="px-4 py-3">Owner</th>
+                      <th className="px-4 py-3">Title</th>
+                      <th className="px-4 py-3">Description</th>
+                      <th className="px-4 py-3">Status</th>
+                    </tr>
+                  </thead>
+                  {approved.length > 0 ? (
+                    <tbody className="divide-y divide-gray-200">
+                      {approved.map((proj) => (
+                        <tr className="text-gray-900" key={proj.id}>
+                          <td className="px-4 py-3 whitespace-wrap ">
+                            {proj.owner}
+                          </td>
+                          <td className="px-4 py-3 whitespace-wrap">
+                            {proj.title}
+                          </td>
+                          <td className="px-4 py-3 whitespace-wrap">
+                            {proj.desc}
+                          </td>
+                          <td>
+                            <div className="text-green-700 bg-green-100 w-fit p-0.5 px-2 rounded-sm whitespace-wrap">
+                              {proj.status}
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  ) : (
+                    <tbody>
+                      <tr>
+                        <td colSpan="5">
+                          <div className="text-center py-6 text-gray-500 text-lg">
+                            There are no approved ideas yet.
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  )}
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
 
         {activeSection === "project proposals" && (
-          <section className="space-y-6">
+          <div
+            id="pendingProjects"
+          >
             <header className="flex justify-between p-3">
               <h1 className="text-2xl font-bold text-gray-800">Pending</h1>
             </header>
             <div className="bg-white p-4 rounded-lg shadow-md overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Owner
-                    </th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Title
-                    </th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Description
-                    </th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Comment
-                    </th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Actions
-                    </th>
+                <thead className="bg-indigo-50">
+                  <tr className="text-indigo-900 uppercase text-left">
+                    <th className="px-4 py-3">Owner</th>
+                    <th className="px-4 py-3">Title</th>
+                    <th className="px-4 py-3">Description</th>
+                    <th className="px-4 py-3">Comment</th>
+                    <th className="px-4 py-3">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {pending.map((proj) => (
-                    <tr key={proj.id}>
-                      <td className="px-4 py-3 whitespace-wrap text-sm text-gray-900">
-                        {proj.owner}
-                      </td>
-                      <td className="px-4 py-3 whitespace-wrap text-sm text-gray-900">
-                        {proj.title}
-                      </td>
-                      <td className="px-4 py-3 whitespace-wrap text-sm text-gray-900">
-                        {proj.desc}
-                      </td>
-                      <td className="px-4 py-3 whitespace-wrap text-sm text-gray-900">
-                        {proj.comment !== "" ? (
-                          proj.comment
-                        ) : (
-                          <div className="text-gray-500">No comments yet</div>
-                        )}
-                      </td>
-                      <td>
-                        <div className="flex gap-3 text-white">
-                          <button
-                            onClick={() => updateStatus(proj.id, "Pending")}
-                            className=" text-4xl cursor-pointer text-tuwaiq-purple h-fit"
-                          >
-                            <MdOutlineAddComment />
-                          </button>
-                          <button
-                            onClick={() => updateStatus(proj.id, "Rejected")}
-                            className="bg-rose-700 text-sm h-8 rounded-xs px-2 cursor-pointer"
-                          >
-                            Reject
-                          </button>
-                          <button
-                            onClick={() => updateStatus(proj.id, "Approved")}
-                            className="bg-[#2ab482] text-sm h-8 rounded-xs px-2 cursor-pointer"
-                          >
-                            Approve
-                          </button>
+                {pending.length > 0 ? (
+                  <tbody className="divide-y divide-gray-200">
+                    {pending.map((proj) => (
+                      <tr key={proj.id}>
+                        <td className="px-4 py-3 whitespace-wrap text-gray-900">
+                          {proj.owner}
+                        </td>
+                        <td className="px-4 py-3 whitespace-wrap text-gray-900">
+                          {proj.title}
+                        </td>
+                        <td className="px-4 py-3 whitespace-wrap text-gray-900">
+                          {proj.desc}
+                        </td>
+                        <td className="px-4 py-3 whitespace-wrap text-gray-900">
+                          {proj.comment !== "" ? (
+                            proj.comment
+                          ) : (
+                            <div className="text-gray-500">No comments yet</div>
+                          )}
+                        </td>
+                        <td>
+                          <div className="flex gap-3 text-white py-3">
+                            <button
+                              onClick={() => updateStatus(proj.id, "Pending")}
+                              className=" text-4xl cursor-pointer text-tuwaiq-purple h-fit"
+                            >
+                              <MdOutlineAddComment />
+                            </button>
+                            <button
+                              onClick={() => updateStatus(proj.id, "Rejected")}
+                              className="bg-rose-700  h-8 rounded-xs px-2 cursor-pointer"
+                            >
+                              Reject
+                            </button>
+                            <button
+                              onClick={() => updateStatus(proj.id, "Approved")}
+                              className="bg-[#2ab482]  h-8 rounded-xs px-2 cursor-pointer"
+                            >
+                              Approve
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                ) : (
+                  <tbody>
+                    <tr>
+                      <td colSpan="5">
+                        <div className="text-center py-6 text-gray-500 text-lg">
+                          You don't have any pending projects
                         </div>
                       </td>
                     </tr>
-                  ))}
-                </tbody>
+                  </tbody>
+                )}
               </table>
             </div>
-            <h1 className="text-2xl font-bold text-gray-800">Determined</h1>
+            <header className="flex justify-between p-3">
+              <h1 className="text-2xl font-bold text-gray-800">Determined</h1>
+            </header>
             <div className="bg-white p-4 rounded-lg shadow-md overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Owner
-                    </th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Title
-                    </th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Description
-                    </th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Comment
-                    </th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Status
-                    </th>
+                <thead className="bg-indigo-50">
+                  <tr className="text-indigo-900 uppercase text-left">
+                    <th className="px-4 py-3">Owner</th>
+                    <th className="px-4 py-3">Title</th>
+                    <th className="px-4 py-3">Description</th>
+                    <th className="px-4 py-3">Comment</th>
+                    <th className="px-4 py-3">Status</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {determined.map((proj) => (
-                    <tr key={proj.id}>
-                      <td className="px-4 py-3 whitespace-wrap text-sm text-gray-900">
-                        {proj.owner}
-                      </td>
-                      <td className="px-4 py-3 whitespace-wrap text-sm text-gray-900">
-                        {proj.title}
-                      </td>
-                      <td className="px-4 py-3 whitespace-wrap text-sm text-gray-900">
-                        {proj.desc}
-                      </td>
-
-                      <td>
-                        <div
-                          className={` w-fit p-0.5 px-2 rounded-sm whitespace-wrap text-sm ${
-                            proj.status === "Approved"
-                              ? "text-green-600 bg-green-50"
-                              : "text-red-700 bg-red-50"
-                          } `}
-                        >
-                          {proj.status}
+                {determined.length > 0 ? (
+                  <tbody className="divide-y divide-gray-200">
+                    {determined.map((proj) => (
+                      <tr key={proj.id}>
+                        <td className="px-4 py-3 whitespace-wrap  text-gray-900">
+                          {proj.owner}
+                        </td>
+                        <td className="px-4 py-3 whitespace-wrap  text-gray-900">
+                          {proj.title}
+                        </td>
+                        <td className="px-4 py-3 whitespace-wrap  text-gray-900">
+                          {proj.desc}
+                        </td>
+                        <td>
+                          <div
+                            className={` w-fit p-0.5 px-2 rounded-sm whitespace-wrap  ${
+                              proj.status === "Approved"
+                                ? "text-green-700 bg-green-100"
+                                : "text-red-800 bg-red-100"
+                            } `}
+                          >
+                            {proj.status}
+                          </div>
+                        </td>
+                        <td className="px-4 py-3 whitespace-wrap  text-gray-900">
+                          {proj.comment !== "" ? (
+                            proj.comment
+                          ) : (
+                            <div className="text-gray-500">
+                              No comments provided
+                            </div>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                ) : (
+                  <tbody>
+                    <tr>
+                      <td colSpan="5">
+                        <div className="text-center py-6 text-gray-500 text-lg">
+                          You don't have any determined projects
                         </div>
                       </td>
-                      <td className="px-4 py-3 whitespace-wrap text-sm text-gray-900">
-                        {proj.comment !== "" ? (
-                          proj.comment
-                        ) : (
-                          <div className="text-gray-500">
-                            No comments provided
-                          </div>
-                        )}
-                      </td>
                     </tr>
-                  ))}
-                </tbody>
+                  </tbody>
+                )}
               </table>
             </div>
-          </section>
+          </div>
         )}
 
         {activeSection === "my team" && (
           <div>
-            <h1 className="text-2xl font-bold text-gray-800">My Team</h1>
+            <header className="flex justify-between p-3">
+              <h1 className="text-2xl font-bold text-gray-800">My Team</h1>
+            </header>
             <div className="bg-white p-4 rounded-lg shadow-md overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-4 py-3 text-center font-medium text-gray-500 uppercase tracking-wider">
-                      Name
-                    </th>
-                    <th className="px-4 py-3 text-center font-medium text-gray-500 uppercase tracking-wider">
-                      Role
-                    </th>
-                    <th className="px-4 py-3 text-center font-medium text-gray-500 uppercase tracking-wider">
-                      Email
-                    </th>
-                    <th className="px-4 py-3 text-center font-medium text-gray-500 uppercase tracking-wider">
-                      Contact
-                    </th>
+                <thead className="bg-indigo-50">
+                  <tr className="text-indigo-900 uppercase text-center">
+                    <th className="px-4 py-3">Name</th>
+                    <th className="px-4 py-3">Role</th>
+                    <th className="px-4 py-3">Email</th>
+                    <th className="px-4 py-3">Contact</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
@@ -485,7 +520,7 @@ const Teachers = () => {
                       <td className="px-4 py-3 whitespace-wrap text-center text-gray-900">
                         {std.email}
                       </td>
-                      <td className="px-4  text-3xl text-tuwaiq-purple">
+                      <td className="px-4 text-3xl text-tuwaiq-purple">
                         <div className=" flex items-center justify-center cursor-pointer">
                           <a href={`mailto:${std.email}`}>
                             <MdEmail />
