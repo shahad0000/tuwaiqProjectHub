@@ -210,7 +210,7 @@ const Students = () => {
 
       {/* Sidebar */}
       <aside
-        className={`bg-white shadow-lg fixed md:static inset-y-0 left-0 z-40 transition-all duration-300 ease-in-out ${
+        className={`bg-white fixed md:static inset-y-0 left-0 z-40 transition-all duration-300 ease-in-out ${
           openSidebar ? "w-64" : "hidden md:block md:w-64"
         }`}
       >
@@ -286,7 +286,7 @@ const Students = () => {
             <section className="relative  py-6 px-4">
               <div className="absolute inset-0 opacity-30">
                 <div className="absolute top-20 left-20 w-32 h-32 bg-indigo-200 rounded-full blur-xl"></div>
-                <div className="absolute bottom-20 right-20 w-40 h-40 bg-purple-200 rounded-full blur-xl"></div>
+                <div className="absolute top-20 right-20 w-40 h-40 bg-purple-300 rounded-full blur-xl"></div>
               </div>
               <header className="relative z-10 px-6 mb-3">
                 <h1 className="text-3xl font-bold  text-neutral-600 mb-3">
@@ -295,8 +295,8 @@ const Students = () => {
                 <div className="w-16 h-1 bg-gradient-to-r from-indigo-500 to-indigo-800 rounded-full"></div>
               </header>
 
-              <div className="relative z-10 container mx-auto px-5 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div className="w-full flex flex-col md:items-start md:text-left order-2 lg:order-1 items-center text-center">
+              <div className="relative z-10 container mx-auto px-5 grid grid-cols-1 lg:grid-cols-5 items-center">
+                <div className="w-full flex lg:col-span-2 flex-col md:items-start md:text-left order-2 lg:order-1 items-center text-center">
                   <h1 className="title-font text-4xl sm:text-5xl  font-bold text-gray-900 leading-tight">
                     Share Your Next
                     <span className=" mx-2 text-indigo-900">Big Idea</span>
@@ -309,14 +309,14 @@ const Students = () => {
                   <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
                     <button
                       onClick={() => setAddProj(true)}
-                      className=" text-white bg-gradient-to-br from-indigo-800 to-indigo-900 cursor-pointer border-0 py-2 px-8 focus:outline-none hover:from-indigo-900 rounded-md text-lg font-semibold "
+                      className=" text-white bg-gradient-to-br from-indigo-800 to-indigo-900  cursor-pointer border-0 py-2 px-8 focus:outline-none hover:from-indigo-900 rounded-md text-lg font-semibold "
                     >
                       New Project Idea +
                     </button>
                   </div>
                 </div>
 
-                <div className="w-full order-1 lg:order-2">
+                <div className="w-full order-1 lg:col-span-3 lg:order-2 ">
                   <div>
                     <img
                       className="object-cover object-center rounded-2xl w-full "

@@ -1,19 +1,18 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router";
-import Layout from "../components/Layout";
 import SignUp from "../pages/SignUp";
 import Login from "../pages/Login";
 import Admin from "../pages/Admin";
 import Students from "../pages/Students";
 import Teachers from "../pages/Teachers";
-
+import Layout from "../components/Layout";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Login />,
+    element: <Layout />,
     children: [
+      { index: true, path: "/login", element: <Login /> },
       { path: "/signUp", element: <SignUp /> },
-      { path: "/login", element: <Login /> },
       { path: "/admins", element: <Admin /> },
       { path: "/students", element: <Students /> },
       { path: "/teachers", element: <Teachers /> },

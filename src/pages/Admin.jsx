@@ -29,6 +29,7 @@ import {
   Cell,
   ResponsiveContainer,
 } from "recharts";
+import Footer from "../components/Footer";
 
 const Admin = () => {
   const currUsername = localStorage.getItem("username");
@@ -493,7 +494,7 @@ const Admin = () => {
 
       {/* Sidebar */}
       <aside
-        className={`bg-white shadow-lg fixed md:static inset-y-0 left-0 z-40 transition-all duration-300 ease-in-out ${
+        className={`bg-white fixed md:static inset-y-0 left-0 z-40 transition-all duration-300 ease-in-out ${
           openSidebar ? "w-64" : "hidden md:block md:w-64"
         }`}
       >
@@ -1070,6 +1071,7 @@ const Admin = () => {
           </div>
         )}
       </main>
+
     </div>
   );
 };

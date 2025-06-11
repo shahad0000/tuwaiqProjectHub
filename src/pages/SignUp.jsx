@@ -142,13 +142,13 @@ const SignUp = () => {
                   <div>
                     <img
                       className="w-19 h-19 object-cover"
-                      src="public/imgs/tuwaiqLogo.png"
+                      src="/imgs/tuwaiqLogo.png"
                       alt=""
                     />
                   </div>
                 </div>
                 <div className="w-full h-full">
-                    <img className="  object-cover" src="/imgs/programmer.png" alt="" />
+                    <img className="object-cover" src="/imgs/programmer.png" alt="" />
                 </div>
               </div>
             </div>
