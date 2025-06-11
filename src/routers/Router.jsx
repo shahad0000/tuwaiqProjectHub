@@ -10,7 +10,7 @@ import Teachers from "../pages/Teachers";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    element: <Login />,
     children: [
       { path: "/signUp", element: <SignUp /> },
       { path: "/login", element: <Login /> },
