@@ -48,12 +48,22 @@ const SignUp = () => {
   };
 
   return (
-    <div>
+    <div className="bg-indigo-50/70 min-h-[80vh]">
       <div>
-        <div className="min-h-screen bg-gray-50 text-gray-900 flex justify-center">
-          <div className="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
-            <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
-              <div className="mt-12 flex flex-col items-center">
+        <div className=" py-33 lg:py-11  text-gray-900 flex flex-col justify-center items-center">
+          <div className="text-gray-700 font-bold text-5xl text-center flex gap-2 items-center justify-center mb-3">
+            <div>Tuwaiq ProjectHub</div>
+            <div>
+              <img
+                className="w-19 h-19 object-cover"
+                src="/imgs/tuwaiqLogo.png"
+                alt="tuwaiq logo"
+              />
+            </div>
+          </div>
+          <div className="w-10/12 m-0 sm:m-11 bg-white sm:rounded-lg flex item justify-center flex-1">
+          <div className="w-full lg:w-1/2 xl:w-5/12 p-6 sm:p-12 shadow-md">
+          <div className="mt-12 flex flex-col items-center">
                 <h1 className="text-2xl xl:text-3xl font-extrabold">
                   Create an account
                 </h1>
@@ -135,20 +145,14 @@ const SignUp = () => {
                 </div>
               </div>
             </div>
-            <div className="flex-1 bg-[#f8f8fc] text-center hidden lg:flex justify-center">
+            <div className="flex-1 bg-indigo-50/70 text-center hidden lg:flex justify-center items-center">
               <div className="flex flex-col items-center justify-center">
-                <div className="text-gray-700 font-bold text-5xl text-center flex gap-2 items-center justify-center mb-3">
-                  <div>Tuwaiq ProjectHub</div>
-                  <div>
-                    <img
-                      className="w-19 h-19 object-cover"
-                      src="/imgs/tuwaiqLogo.png"
-                      alt=""
-                    />
-                  </div>
-                </div>
                 <div className="w-full h-full">
-                    <img className="object-cover" src="/imgs/programmer.png" alt="" />
+                  <img
+                    className="object-cover"
+                    src="/imgs/programmer.png"
+                    alt=""
+                  />
                 </div>
               </div>
             </div>

@@ -6,9 +6,9 @@ import { PiTwitterLogoDuotone } from "react-icons/pi";
 
 const Footer = () => {
   return (
-    <div className="backdrop-blur-2xl bg-indigo-100/30">
-      <footer class="flex flex-col space-y-10 justify-center p-10">
-        <div class="flex justify-center text-4xl text-indigo-900 space-x-5">
+    <div className="backdrop-blur-2xl bg-indigo-100/30 border-4 border-white">   
+      <footer className="flex flex-col space-y-10 justify-center p-10">
+        <div className="flex justify-center text-4xl text-indigo-900 space-x-5">
           <a
             href="https://facebook.com"
             target="_blank"
@@ -38,7 +38,7 @@ const Footer = () => {
             <PiTwitterLogoDuotone />
           </a>
         </div>
-        <p class="text-center text-gray-700 font-medium">
+        <p className="text-center text-gray-700 font-medium">
           &copy; 2025 Tuwaiq Project Hub. All rights reserved.
         </p>
       </footer>
