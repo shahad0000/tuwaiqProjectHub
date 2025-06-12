@@ -10,6 +10,7 @@ import { MdEmail } from "react-icons/md";
 import { FaPenAlt } from "react-icons/fa";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { FaCheckCircle } from "react-icons/fa";
+import { PiSmileyDuotone } from "react-icons/pi";
 
 const Students = () => {
   const [openSidebar, setOpenSidebar] = useState(false);
@@ -468,71 +469,86 @@ const Students = () => {
                     <th className="px-4 py-3 ">Contact</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200">
-                  <tr>
-                    <td className="px-4 py-3 whitespace-wrap text-center text-gray-900">
-                      <div
-                        className="flex gap-4
-                     items-center"
-                      >
-                        <div className="w-12 h-12 rounded-full font-bold text-sky-800 text-xl bg-sky-100 border-2 flex items-center justify-center">
-                          {team.teacher[0]}
-                        </div>
-                        <div className="font-semibold text-xl">
-                          {team.teacher}
-                        </div>
-                      </div>
-                    </td>
-                    <td className=" p-4 h-full justify-center flex items-start text-center text-gray-900">
-                      <div className="bg-amber-50 w-fit text-yellow-800 p-1 px-2 rounded-sm">
-                        Team Leader
-                      </div>
-                    </td>
-                    <td className="px-4 py-3 whitespace-wrap text-center text-gray-900">
-                      {team.email}
-                    </td>
-                    <td className="px-4 text-3xl text-tuwaiq-purple">
-                      <div className=" flex items-center justify-center cursor-pointer">
-                        <a href={`mailto:${team.email}`}>
-                          <MdEmail />
-                        </a>
-                      </div>
-                    </td>
-                  </tr>
-                  {team.students.map((std) => (
-                    <tr key={std.id}>
+                {team?.students ? (
+                  <tbody className="divide-y divide-gray-200">
+                    <tr>
                       <td className="px-4 py-3 whitespace-wrap text-center text-gray-900">
-                        <div className="flex gap-4 items-center">
-                          <div className="w-12 h-12 font-bold rounded-full text-lime-700 text-2xl bg-lime-50 border-2 flex items-center justify-center">
-                            {std.username[0]}
+                        <div
+                          className="flex gap-4
+                     items-center"
+                        >
+                          <div className="w-12 h-12 rounded-full font-bold text-sky-800 text-xl bg-sky-100 border-2 flex items-center justify-center">
+                            {team.teacher[0]}
                           </div>
                           <div className="font-semibold text-xl">
-                            {std.username === currUsername
-                              ? "You"
-                              : std.username}
+                            {team.teacher}
                           </div>
                         </div>
                       </td>
                       <td className=" p-4 h-full justify-center flex items-start text-center text-gray-900">
-                        <div className="bg-blue-50 w-fit text-blue-800 p-1 px-2 rounded-sm">
-                          Team Member
+                        <div className="bg-amber-50 w-fit text-yellow-800 p-1 px-2 rounded-sm">
+                          Team Leader
                         </div>
                       </td>
                       <td className="px-4 py-3 whitespace-wrap text-center text-gray-900">
-                        {std.email}
+                        {team.email}
                       </td>
-                      <td className="px-4  text-3xl text-tuwaiq-purple">
+                      <td className="px-4 text-3xl text-tuwaiq-purple">
                         <div className=" flex items-center justify-center cursor-pointer">
-                          {std.username !== currUsername && (
-                            <a href={`mailto:${std.email}`}>
-                              <MdEmail />
-                            </a>
-                          )}
+                          <a href={`mailto:${team.email}`}>
+                            <MdEmail />
+                          </a>
                         </div>
                       </td>
                     </tr>
-                  ))}
-                </tbody>
+                    {team.students.map((std) => (
+                      <tr key={std.id}>
+                        <td className="px-4 py-3 whitespace-wrap text-center text-gray-900">
+                          <div className="flex gap-4 items-center">
+                            <div className="w-12 h-12 font-bold rounded-full text-lime-700 text-2xl bg-lime-50 border-2 flex items-center justify-center">
+                              {std.username[0]}
+                            </div>
+                            <div className="font-semibold text-xl">
+                              {std.username === currUsername
+                                ? "You"
+                                : std.username}
+                            </div>
+                          </div>
+                        </td>
+                        <td className=" p-4 h-full justify-center flex items-start text-center text-gray-900">
+                          <div className="bg-blue-50 w-fit text-blue-800 p-1 px-2 rounded-sm">
+                            Team Member
+                          </div>
+                        </td>
+                        <td className="px-4 py-3 whitespace-wrap text-center text-gray-900">
+                          {std.email}
+                        </td>
+                        <td className="px-4  text-3xl text-tuwaiq-purple">
+                          <div className=" flex items-center justify-center cursor-pointer">
+                            {std.username !== currUsername && (
+                              <a href={`mailto:${std.email}`}>
+                                <MdEmail />
+                              </a>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                ) : (
+                  <tbody>
+                    <tr>
+                      <td colSpan="5">
+                        <div className="text-center py-6 text-gray-500 flex flex-col justify-center items-center gap-3">
+                          <div className="text-6xl text-indigo-900">
+                          <PiSmileyDuotone />
+                          </div>
+                          <div>Seems you are not assigned to a team yet.</div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                )}
               </table>
             </div>
           </div>

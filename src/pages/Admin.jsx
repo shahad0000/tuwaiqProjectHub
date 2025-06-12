@@ -983,9 +983,7 @@ const Admin = () => {
                             </div>
                             <div>
                                   Oops! No results found. 
-                            </div>
-                        
-                          
+                            </div>             
                         </div>
                       </td>
                     </tr>
@@ -1022,7 +1020,7 @@ const Admin = () => {
                           <h1 className="text-2xl font-bold text-gray-700 m-3">
                             Members
                           </h1>
-                          <div>
+                          {team.students.length > 0 ? (         <div>
                             {team.students.map((std) => (
                               <div key={std.id}>
                                 <div className="flex justify-between border-1 p-2 border-gray-300">
@@ -1047,7 +1045,8 @@ const Admin = () => {
                                 </div>
                               </div>
                             ))}
-                          </div>
+                          </div>) : (<div className="text-2xl text-gray-500 text-center my-4">There are no members in this team yet</div>)}
+                 
                           <div className="flex justify-between p-2 my-5">
                             <div className="text-2xl">
                               {team.students.length} Members
