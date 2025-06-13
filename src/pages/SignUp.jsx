@@ -44,6 +44,17 @@ const SignUp = () => {
       "https://6844185771eb5d1be03260ba.mockapi.io/users",
       creds
     );
+    if (creds.role === "teacher") {
+      const postRes = await axios.post(
+        "https://6844185771eb5d1be03260ba.mockapi.io/teams",
+        {
+          tId: creds.id,
+          email: creds.email,
+          teacher: creds.username,
+          students: [],
+        }
+      );
+    }
     navigate("/login");
   };
 
@@ -62,8 +73,8 @@ const SignUp = () => {
             </div>
           </div>
           <div className="w-10/12 m-0 sm:m-11 bg-white sm:rounded-lg flex item justify-center flex-1">
-          <div className="w-full lg:w-1/2 xl:w-5/12 p-6 sm:p-12 shadow-md">
-          <div className="mt-12 flex flex-col items-center">
+            <div className="w-full lg:w-1/2 xl:w-5/12 p-6 sm:p-12 shadow-md">
+              <div className="mt-12 flex flex-col items-center">
                 <h1 className="text-2xl xl:text-3xl font-extrabold">
                   Create an account
                 </h1>

@@ -29,7 +29,6 @@ import {
   Cell,
   ResponsiveContainer,
 } from "recharts";
-import Footer from "../components/Footer";
 
 const Admin = () => {
   const currUsername = localStorage.getItem("username");
@@ -58,6 +57,7 @@ const Admin = () => {
   const [determined, setDetermined] = useState([]);
   const [approved, setApproved] = useState([]);
   const [rejected, setRejected] = useState([]);
+  const [teamsProjectsData, SetTeamsProjectsData] = useState([]);
 
   const menuItems = [
     { label: "dashboard", icon: <MdDashboard /> },
@@ -70,7 +70,6 @@ const Admin = () => {
     { name: "Rejected", value: rejected.length, color: "#dd253b" },
     { name: "Pending", value: pending.length, color: "#f2cb6d" },
   ];
-  const [teamsProjectsData, SetTeamsProjectsData] = useState([]);
 
   const getTeamData = () => {
     const formattedData = teams.map((team) => {
@@ -111,6 +110,7 @@ const Admin = () => {
   };
 
   const editTeams = async (id) => {
+    console.log(teams)
     const team = teams.find((t) => t.id === id);
     if (!team) return;
 
@@ -151,11 +151,30 @@ const Admin = () => {
         confirmButtonColor: "#4f29b7",
       });
     }
-    const postRes = await axios.post(
+    const postUser = await axios.post(
       "https://6844185771eb5d1be03260ba.mockapi.io/users",
       creds
     );
+    if (creds.role === "teacher") {
+        getUsers();
+      const postTeam = await axios.post(
+        "https://6844185771eb5d1be03260ba.mockapi.io/teams",
+        {
+          email: creds.email,
+          teacher: creds.username,
+          students: [],
+        }
+      );
+    }
     setUsers((prev) => [...prev, creds]);
+    setTeams((prev) => [
+      ...prev,
+      {
+        email: creds.email,
+        teacher: creds.username,
+        students: []
+      },
+    ]);
     setFreeUsers((prev) => [...prev, creds]);
     setShowUserFrom(false);
     setCreds({
@@ -203,16 +222,34 @@ const Admin = () => {
     });
     if (confirmDelete.isConfirmed) {
       try {
+        const userToDelete = users.find((user) => user.id === id);
         const res = await axios.delete(
           `https://6844185771eb5d1be03260ba.mockapi.io/users/${id}`
         );
         setUsers(users.filter((user) => user.id !== id));
+        if (userToDelete.role === "teacher") {
+          const teamToDelete = teams.find(
+            (team) => team.teacher === userToDelete.username
+          );
+          if (teamToDelete) {
+            await delTeam(teamToDelete.id);
+          }
+        }
       } catch (err) {
         console.error(err);
       }
     }
   };
-
+  const delTeam = async (id) => {
+    try {
+      const res = await axios.delete(
+        `https://6844185771eb5d1be03260ba.mockapi.io/teams/${id}`
+      );
+      setTeams(teams.filter((team) => team.id !== id));
+    } catch (err) {
+      console.error(err);
+    }
+  };
   const remMember = async (teamId, stdId) => {
     const confirmDelete = await Swal.fire({
       icon: "question",
@@ -352,7 +389,7 @@ const Admin = () => {
     <div className="flex flex-col md:flex-row min-h-screen font-sans">
       {showUserForm && (
         <div className="bg-black/50 overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 h-full items-center justify-center flex">
-          <div className="bg-white p-14">
+          <div className="bg-white rounded-2xl p-14">
             <h1 className="text-2xl xl:text-3xl font-extrabold text-center mb-3">
               Create a new user
             </h1>
@@ -413,7 +450,7 @@ const Admin = () => {
                 >
                   Cancel
                 </button>
-                <button className="mt-8 tracking-wide font-semibold bg-tuwaiq-purple text-gray-100 w-full py-3 rounded-sm cursor-pointer transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
+                <button className="mt-8 tracking-wide font-semibold bg-indigo-800 text-gray-100 w-full py-3 rounded-sm cursor-pointer transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
                   Create
                 </button>
               </div>
@@ -444,7 +481,7 @@ const Admin = () => {
                         }
                       >
                         <div className="flex gap-5 border-1 p-2 border-gray-300">
-                          <div className="w-10 h-10 rounded-full bg-cyan-600 text-2xl text-white flex items-center justify-center">
+                          <div className="w-10 h-10 rounded-full bg-lime-50 text-2xl text-lime-800 border-2 flex items-center justify-center">
                             {user.username[0]}
                           </div>
                           <div className="flex flex-col w-50 text-start">
@@ -978,12 +1015,10 @@ const Admin = () => {
                     <tr>
                       <td colSpan="5">
                         <div className="text-center py-6 text-gray-500 flex flex-col justify-center items-center gap-3">
-                            <div className="text-6xl text-indigo-900">
+                          <div className="text-6xl text-indigo-900">
                             <PiSmileySadDuotone />
-                            </div>
-                            <div>
-                                  Oops! No results found. 
-                            </div>             
+                          </div>
+                          <div>Oops! No results found.</div>
                         </div>
                       </td>
                     </tr>
@@ -1004,9 +1039,11 @@ const Admin = () => {
                     <div className="rounded overflow-hidden shadow-md bg-white ">
                       <div className="absolute -mt-15 w-full flex justify-center">
                         <div className="h-27 w-34 rounded-xl flex items-center justify-center text-5xl font-bold text-sky-800 border-3 bg-sky-100">
-                          {team.teacher.split(" ")[0][0] +
-                            " " +
-                            team.teacher.split(" ")[1]?.[0]}
+                          {team?.teacher
+                            .split(" ")
+                            .map((word) => word[0])
+                            .join(" ")
+                            .toUpperCase()}
                         </div>
                       </div>
                       <div className="px-6 mt-16">
@@ -1020,33 +1057,39 @@ const Admin = () => {
                           <h1 className="text-2xl font-bold text-gray-700 m-3">
                             Members
                           </h1>
-                          {team.students.length > 0 ? (         <div>
-                            {team.students.map((std) => (
-                              <div key={std.id}>
-                                <div className="flex justify-between border-1 p-2 border-gray-300">
-                                  <div className="w-12 h-12 rounded-full text-lime-700 text-2xl bg-lime-50 border-2 font-bold flex items-center justify-center">
-                                    {std.username[0]}
-                                  </div>
-                                  <div className="flex flex-col w-70">
-                                    <div className="font-bold text-xl">
-                                      {std.username}
+                          {team.students.length > 0 ? (
+                            <div>
+                              {team.students.map((std) => (
+                                <div key={std.id}>
+                                  <div className="flex justify-between border-1 p-2 border-gray-300">
+                                    <div className="w-12 h-12 rounded-full text-lime-700 text-2xl bg-lime-50 border-2 font-bold flex items-center justify-center">
+                                      {std.username[0]}
                                     </div>
-                                    <div className="text-gray-500">
-                                      {std.email}
+                                    <div className="flex flex-col w-70">
+                                      <div className="font-bold text-xl">
+                                        {std.username}
+                                      </div>
+                                      <div className="text-gray-500">
+                                        {std.email}
+                                      </div>
                                     </div>
-                                  </div>
 
-                                  <button
-                                    onClick={() => remMember(team.id, std.id)}
-                                    className="text-red-700 cursor-pointer"
-                                  >
-                                    Remove
-                                  </button>
+                                    <button
+                                      onClick={() => remMember(team.id, std.id)}
+                                      className="text-red-700 cursor-pointer"
+                                    >
+                                      Remove
+                                    </button>
+                                  </div>
                                 </div>
-                              </div>
-                            ))}
-                          </div>) : (<div className="text-2xl text-gray-500 text-center my-4">There are no members in this team yet</div>)}
-                 
+                              ))}
+                            </div>
+                          ) : (
+                            <div className="text-2xl text-gray-500 text-center my-4">
+                              There are no members in this team yet
+                            </div>
+                          )}
+
                           <div className="flex justify-between p-2 my-5">
                             <div className="text-2xl">
                               {team.students.length} Members
@@ -1070,7 +1113,6 @@ const Admin = () => {
           </div>
         )}
       </main>
-
     </div>
   );
 };

@@ -200,7 +200,7 @@ const Students = () => {
                 >
                   Cancel
                 </button>
-                <button className="mt-8 tracking-wide font-semibold bg-tuwaiq-purple text-gray-100 w-full py-3 rounded-sm cursor-pointer transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
+                <button className="mt-8 tracking-wide font-semibold bg-indigo-800 text-gray-100 w-full py-3 rounded-sm cursor-pointer transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
                   Submit
                 </button>
               </div>
@@ -510,7 +510,7 @@ const Students = () => {
                             </div>
                             <div className="font-semibold text-xl">
                               {std.username === currUsername
-                                ? "You"
+                                ?  <div>{std.username} <span className="text-gray-500">(You)</span></div> 
                                 : std.username}
                             </div>
                           </div>
