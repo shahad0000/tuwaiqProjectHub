@@ -831,8 +831,8 @@ const Admin = () => {
                     <th className="px-4 py-3">Owner</th>
                     <th className="px-4 py-3">Title</th>
                     <th className="px-4 py-3">Description</th>
-                    <th className="px-4 py-3">Comment</th>
                     <th className="px-4 py-3">Status</th>
+                    <th className="px-4 py-3">Comment</th>
                   </tr>
                 </thead>
                 {determined.length > 0 ? (
