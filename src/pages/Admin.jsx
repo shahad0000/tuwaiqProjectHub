@@ -16,6 +16,8 @@ import { PiProjectorScreenChartDuotone } from "react-icons/pi";
 import { PiSealCheckDuotone } from "react-icons/pi";
 import { PiClockCountdownDuotone } from "react-icons/pi";
 import { PiSmileySadDuotone } from "react-icons/pi";
+import { CiCircleRemove } from "react-icons/ci";
+
 import {
   BarChart,
   Bar,
@@ -110,7 +112,7 @@ const Admin = () => {
   };
 
   const editTeams = async (id) => {
-    console.log(teams)
+    console.log(teams);
     const team = teams.find((t) => t.id === id);
     if (!team) return;
 
@@ -156,7 +158,6 @@ const Admin = () => {
       creds
     );
     if (creds.role === "teacher") {
-        getUsers();
       const postTeam = await axios.post(
         "https://6844185771eb5d1be03260ba.mockapi.io/teams",
         {
@@ -165,17 +166,11 @@ const Admin = () => {
           students: [],
         }
       );
+      setTeams((prev) => [...prev, postTeam.data]);
     }
     setUsers((prev) => [...prev, creds]);
-    setTeams((prev) => [
-      ...prev,
-      {
-        email: creds.email,
-        teacher: creds.username,
-        students: []
-      },
-    ]);
-    setFreeUsers((prev) => [...prev, creds]);
+    getUsers();
+    if (creds.role !== "teacher") setFreeUsers((prev) => [...prev, creds]);
     setShowUserFrom(false);
     setCreds({
       email: "",
@@ -924,7 +919,7 @@ const Admin = () => {
             <div className="bg-white p-4 rounded-lg shadow-md overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-indigo-50">
-                  <tr className="text-indigo-900 uppercase text-left">
+                  <tr className="text-indigo-900 uppercase text-center">
                     <th className="px-4 py-3">Username</th>
                     <th className="px-4 py-3">Email</th>
                     <th className="px-4 py-3">Role</th>
@@ -972,7 +967,7 @@ const Admin = () => {
                               </div>
                             </div>
                           </td>
-                          <td className="px-4 py-3 whitespace-wrap text-gray-900">
+                          <td className="px-4 py-3 whitespace-wrap text-center text-gray-900">
                             {user.email}
                           </td>
                           <td>
@@ -1078,7 +1073,8 @@ const Admin = () => {
                                       onClick={() => remMember(team.id, std.id)}
                                       className="text-red-700 cursor-pointer"
                                     >
-                                      Remove
+                                      <div className="text-3xl "><CiCircleRemove />
+                                      </div>
                                     </button>
                                   </div>
                                 </div>
