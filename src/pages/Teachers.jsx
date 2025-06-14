@@ -285,7 +285,7 @@ const Teachers = () => {
                     <tbody className="divide-y divide-gray-200">
                       {approved.map((proj) => (
                         <tr className="text-gray-900" key={proj.id}>
-                          <td className="px-4 py-3 whitespace-wrap ">
+                          <td className="px-4 py-3 whitespace-wrap font-semibold text-md text-gray-700">
                             {proj.owner}
                           </td>
                           <td className="px-4 py-3 whitespace-wrap">
@@ -295,7 +295,7 @@ const Teachers = () => {
                             {proj.desc}
                           </td>
                           <td>
-                            <div className="text-green-700 bg-green-100 w-fit p-0.5 px-2 rounded-sm whitespace-wrap">
+                            <div className="text-green-700 bg-green-100 w-fit p-0.5 px-2.5 rounded-md whitespace-wrap">
                               {proj.status}
                             </div>
                           </td>
@@ -341,7 +341,7 @@ const Teachers = () => {
                   <tbody className="divide-y divide-gray-200">
                     {pending.map((proj) => (
                       <tr key={proj.id}>
-                        <td className="px-4 py-3 whitespace-wrap text-gray-900">
+                        <td className="px-4 py-3 whitespace-wrap font-semibold text-xl text-gray-700">
                           {proj.owner}
                         </td>
                         <td className="px-4 py-3 whitespace-wrap text-gray-900">
@@ -361,19 +361,19 @@ const Teachers = () => {
                           <div className="flex gap-3 text-white py-3">
                             <button
                               onClick={() => updateStatus(proj.id, "Pending")}
-                              className=" text-4xl cursor-pointer text-tuwaiq-purple h-fit"
+                              className=" text-3xl cursor-pointer text-indigo-800 h-fit"
                             >
                               <MdOutlineAddComment />
                             </button>
                             <button
                               onClick={() => updateStatus(proj.id, "Rejected")}
-                              className="bg-rose-700  h-8 rounded-xs px-2 cursor-pointer"
+                              className="bg-rose-700  h-7 rounded-md px-2 cursor-pointer"
                             >
                               Reject
                             </button>
                             <button
                               onClick={() => updateStatus(proj.id, "Approved")}
-                              className="bg-[#2ab482]  h-8 rounded-xs px-2 cursor-pointer"
+                              className="bg-[#2ab482]  h-7 rounded-md px-2 cursor-pointer"
                             >
                               Approve
                             </button>
@@ -405,15 +405,15 @@ const Teachers = () => {
                     <th className="px-4 py-3">Owner</th>
                     <th className="px-4 py-3">Title</th>
                     <th className="px-4 py-3">Description</th>
-                    <th className="px-4 py-3">Comment</th>
                     <th className="px-4 py-3">Status</th>
+                    <th className="px-4 py-3">Comment</th>
                   </tr>
                 </thead>
                 {determined.length > 0 ? (
                   <tbody className="divide-y divide-gray-200">
                     {determined.map((proj) => (
                       <tr key={proj.id}>
-                        <td className="px-4 py-3 whitespace-wrap  text-gray-900">
+                        <td className="px-4 py-3 whitespace-wrap font-semibold text-xl text-gray-700">
                           {proj.owner}
                         </td>
                         <td className="px-4 py-3 whitespace-wrap  text-gray-900">
@@ -424,7 +424,7 @@ const Teachers = () => {
                         </td>
                         <td>
                           <div
-                            className={` w-fit p-0.5 px-2 rounded-sm whitespace-wrap  ${
+                            className={` w-fit p-0.5 px-2.5 rounded-md whitespace-wrap  ${
                               proj.status === "Approved"
                                 ? "text-green-700 bg-green-100"
                                 : "text-red-800 bg-red-100"
@@ -486,7 +486,7 @@ const Teachers = () => {
                         <div className="w-12 h-12 rounded-full font-bold text-sky-800 text-xl bg-sky-100 border-2 flex items-center justify-center">
                           {team.teacher[0]}
                         </div>
-                        <div className="font-semibold text-xl">You</div>
+                        <div className="font-semibold text-xl">{team.teacher} <span className="text-gray-500">(You)</span></div>
                       </div>
                     </td>
                     <td className=" p-4 h-full justify-center flex items-start text-center text-gray-900">

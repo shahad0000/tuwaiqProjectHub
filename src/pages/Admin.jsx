@@ -787,19 +787,19 @@ const Admin = () => {
                           <div className="flex gap-3 text-white py-3">
                             <button
                               onClick={() => updateStatus(proj.id, "Pending")}
-                              className=" text-4xl cursor-pointer text-tuwaiq-purple h-fit"
+                              className=" text-3xl cursor-pointer text-indigo-800 h-fit"
                             >
                               <MdOutlineAddComment />
                             </button>
                             <button
                               onClick={() => updateStatus(proj.id, "Rejected")}
-                              className="bg-rose-700  h-8 rounded-xs px-2 cursor-pointer"
+                              className="bg-rose-700  h-7 rounded-sm px-2 cursor-pointer"
                             >
                               Reject
                             </button>
                             <button
                               onClick={() => updateStatus(proj.id, "Approved")}
-                              className="bg-[#2ab482]  h-8 rounded-xs px-2 cursor-pointer"
+                              className="bg-[#34ab7f]  h-7 rounded-sm px-2 cursor-pointer"
                             >
                               Approve
                             </button>
@@ -850,7 +850,7 @@ const Admin = () => {
                         </td>
                         <td>
                           <div
-                            className={` w-fit p-0.5 px-2 rounded-sm whitespace-wrap  ${
+                            className={` w-fit p-0.5 px-2.5 rounded-md whitespace-wrap  ${
                               proj.status === "Approved"
                                 ? "text-green-700 bg-green-100"
                                 : "text-red-800 bg-red-100"
