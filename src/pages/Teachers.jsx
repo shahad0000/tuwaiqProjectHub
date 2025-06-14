@@ -129,6 +129,7 @@ const Teachers = () => {
     const isTeacher = localStorage.getItem("role") === "teacher";
     if (loggedIn && isTeacher) {
       getTeam(currId);
+      getProjects();
     } else {
       navigate("/login");
     }
