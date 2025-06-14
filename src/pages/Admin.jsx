@@ -793,13 +793,13 @@ const Admin = () => {
                             </button>
                             <button
                               onClick={() => updateStatus(proj.id, "Rejected")}
-                              className="bg-rose-700  h-7 rounded-sm px-2 cursor-pointer"
+                              className="bg-rose-700  h-6.6 rounded-sm px-2 cursor-pointer"
                             >
                               Reject
                             </button>
                             <button
                               onClick={() => updateStatus(proj.id, "Approved")}
-                              className="bg-[#34ab7f]  h-7 rounded-sm px-2 cursor-pointer"
+                              className="bg-[#34ab7f]  h-6.6 rounded-sm px-2 cursor-pointer"
                             >
                               Approve
                             </button>
