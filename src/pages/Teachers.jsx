@@ -367,13 +367,13 @@ const Teachers = () => {
                             </button>
                             <button
                               onClick={() => updateStatus(proj.id, "Rejected")}
-                              className="bg-rose-700  h-6.6 rounded-md px-2 cursor-pointer"
+                              className="bg-rose-700  h-6.6 rounded-sm px-2 cursor-pointer"
                             >
                               Reject
                             </button>
                             <button
                               onClick={() => updateStatus(proj.id, "Approved")}
-                              className="bg-[#2ab482]  h-6.6 rounded-md px-2 cursor-pointer"
+                              className="bg-[#2ab482]  h-6.6 rounded-sm px-2 cursor-pointer"
                             >
                               Approve
                             </button>
